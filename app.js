@@ -24,12 +24,16 @@ app.use(function(req, res, next){
     password: process.env.PASSWORD,
     database: process.env.DATABASE
   });
-	connection.connect();
+	connection.connect(function (err) {
+    console.log('conecting');
+    if (err) {
+        console.error('Error connecting: ' + err.stack);
+    }
+
+    console.log('Connected as id ' + connection.threadId);
+  });
 	next();
 });
-app.get('/', (req, res) => {
-  res.send('HEY!')
-})
 app.post('/test/registerPicture', (req, res) => {
   var userName = req.body.user.username;
   var profilePicture = req.body.user.profilePicture;
