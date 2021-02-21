@@ -1,6 +1,5 @@
 const url = require('url');
 dotenv = require('dotenv');
-//const result = dotenv.config({ path: '/Users/famoussg/Projects/documentation/LifesAnExperienceServer/variable.env' });
 const bcrypt = require('bcrypt');
 var express = require('express');
 var fs = require("fs");
