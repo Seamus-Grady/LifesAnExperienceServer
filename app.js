@@ -22,7 +22,8 @@ app.use(function(req, res, next){
     host: process.env.HOST,
     user: process.env.USERS,
     password: process.env.PASSWORD,
-    database: process.env.DATABASE
+    database: process.env.DATABASE,
+    queryTimeout: 60000 
   });
 	connection.connect(function (err) {
     console.log('conecting');
