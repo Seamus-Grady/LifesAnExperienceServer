@@ -27,6 +27,9 @@ app.use(function(req, res, next){
 	connection.connect();
 	next();
 });
+app.get('/', (req, res) => {
+  res.send('HEY!')
+})
 app.post('/test/registerPicture', (req, res) => {
   var userName = req.body.user.username;
   var profilePicture = req.body.user.profilePicture;
