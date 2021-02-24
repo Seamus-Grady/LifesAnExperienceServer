@@ -268,7 +268,7 @@ app.get('/profile/:username', (req, res)=>{
 });
 //Added a get method to get all contacts that a given user has"
 app.get("/contacts/:userName", (req, res) => {
-  var userName = req.params.username;
+  var userName = req.params.userName;
   connection.query('select FriendUserID as id, userName as UserName, ProfilePicture from Contacts join Users on (Users.userID = Contacts.FriendUserID) where ProfileUserID = (select userID from Users where userName = ?)', [userName], function(error, result, field){
     if(error)
     {
