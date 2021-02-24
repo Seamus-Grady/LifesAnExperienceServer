@@ -335,7 +335,7 @@ app.get('/messagecontacts/:userName', (req, res) => {
 app.put('/currentevent', (req, res) => {
     var userName = req.body.currentevent.username;
     var checkDate = req.body.currentevent.thedate;
-    connection.query('select from invite.EventID from (select Invites.EventID from Invites join Users on (Invites.RecipientUserID = Users.userID) where Users.username = ?) as invites join Events on (invites.EventID = Events.EventID) where Events.StartDate = Date(?)',[userName, checkDate], function(error, result, fields){
+    connection.query('select invites.EventID from (select Invites.EventID from Invites join Users on (Invites.RecipientUserID = Users.userID) where Users.username = ?) as invites join Events on (invites.EventID = Events.EventID) where Events.StartDate = ?',[userName, checkDate], function(error, result, fields){
         if(error){
             res.sendStatus(500);
           }
