@@ -331,21 +331,21 @@ app.get('/messagecontacts/:userName', (req, res) => {
         }
     });
 });
-//Get method to get the current event with a given username and event start time given to the server
+//Put method to check the current event with a given username and event start time given to the server
 app.put('/currentevent', (req, res) => {
     var userName = req.body.currentevent.username;
     var checkDate = req.body.currentevent.thedate;
     connection.query('select from invite.EventID from (select Invites.EventID from Invites join Users on (Invites.RecipientUserID = Users.userID) where Users.username = ?) as invites join Events on (invites.EventID = Events.EventID) where Events.StartDate = Date(?)',[userName, checkDate], function(error, result, fields){
         if(error){
-            response.sendStatus(500);
+            res.sendStatus(500);
           }
           else {
             if(result.length != 0)
             {
-                response.sendStatus(200);
+                res.sendStatus(200);
             }
             else {
-              response.sendStatus(204);
+              res.sendStatus(204);
             }
           }
     });
