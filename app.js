@@ -211,7 +211,7 @@ app.put('/login', (request, response, next) => {
 app.put('/newrating', (req, res) => {
     var eventID = req.body.rating.eventid;
     var newRating = req.body.rating.newrate;
-    connection.query('update Events set vibe = ? where EventID = ?', [newRating, eventID], function(error, result, field){
+    connection.query('update Events set Vibe = ? where EventID = ?', [newRating, eventID], function(error, result, field){
         if(error)
         {
             res.sendStatus(500);
