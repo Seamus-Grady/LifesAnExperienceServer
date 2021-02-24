@@ -268,9 +268,9 @@ app.get('/profile/:username', (req, res)=>{
 });
 
 //Put request to delete a contact between a user and a reciepient
-app.put('/messagescontacts/delete/:username/:recipientname', (req, res)=>{
-  var username = req.params.username;
-  var recipientname = req.params.recipientname;
+app.put('/messagescontacts/delete', (req, res)=>{
+  var username = req.body.contactDelete.username;
+  var recipientname = req.body.contactDelete.recipientname;
   connection.query('delete from Contacts where ProfileUserID = (select userID from Users where userName = ?) and FriendUserID = (select userID from Users where userName = ?)', [username, recipientname], function(error, result, field){
     if(error)
     {
@@ -302,9 +302,9 @@ app.put('/updateevent', (req, res) => {
   });
 });
 //Put method to delete all messages between a user and another user
-app.put('/deletemessagecontacts/:userName/:contactName', (req, res)=>{
-  var userName = req.params.userName;
-  var contactName = req.params.contactName;
+app.put('/deletemessagecontacts', (req, res)=>{
+  var userName = req.body.contactDelete.userName;
+  var contactName = req.body.contactDelete.contactName;
   connection.query('delete from Messages where SenderUserID = (select userID from Users where userID = ?) and RecieverUserID = (select userID from Users where userID = ?)', [userName, contactName], function(error, result, fields){
     if(error)
     {
