@@ -266,6 +266,20 @@ app.get('/profile/:username', (req, res)=>{
     }
   });
 });
+//Added a get method to get all contacts that a given user has"
+app.get("/contacts/:userName", (req, res) => {
+  var userName = req.params.username;
+  connection.query('select FriendUserID as id, userName as UserName, ProfilePicture from Contacts join Users on (Users.userID = Contacts.FriendUserID) where ProfileUserID = (select userID from Users where userName = ?)', [userName], function(error, result, field){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.send(JSON.stringify(result));
+    }
+  });
+});
 
 //Put request to delete a contact between a user and a reciepient
 app.put('/messagescontacts/delete', (req, res)=>{
