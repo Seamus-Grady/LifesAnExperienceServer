@@ -241,7 +241,7 @@ app.put('/deleteEvent', (req, res) =>{
 app.post('/messagecontacts/add', (req, res) =>{
   var userName = req.body.messageContact.userName;
   var recieverUser = req.body.messageContact.recieverUserName;
-  connection.query('insert into Contacts(ProfileUserID, FriendUserID) values((select userID from Users where userName = ?), (select userID from Users where userName = ?))', [userName, recieverUserName], function(error, result, field){
+  connection.query('insert into Contacts(ProfileUserID, FriendUserID) values((select userID from Users where userName = ?), (select userID from Users where userName = ?))', [userName, recieverUser], function(error, result, field){
     if(error)
     {
       res.sendStatus(500);
