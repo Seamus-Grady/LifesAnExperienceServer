@@ -209,8 +209,8 @@ app.put('/login', (request, response, next) => {
 });
 //Updates the rating in the database for a given vibe
 app.put('/newrating', (req, res) => {
-    var eventID = req.body.eventid;
-    var newRating = parseInt(req.body.newrate);
+    var eventID = req.body.rating.eventid;
+    var newRating = req.body.rating.newrate;
     connection.query('update Events set vibe = ? where EventID = ?', [newRating, eventID], function(error, result, field){
         if(error)
         {
