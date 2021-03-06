@@ -330,7 +330,51 @@ app.put('/deletemessagecontacts', (req, res)=>{
     }
   });
 });
-
+app.put("/messagecontacts/delete", (req, res)=>{
+  var username = req.body.user.username;
+  var contact = req.body.user.contact;
+  connection.query('delete from Messages where SenderUserID = (select userID from Users where userName = ?) and RecieverUserID = (select userID from Users where userName = ?)', [username,contact], function(error, result, fields){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.sendStatus(200);
+    }
+  });
+});
+//Put method to update the privacy of a profile
+app.put('/setPrivacy', (req,res)=>{
+  var username = req.body.privacy.username;
+  var privacy = req.body.privacy.privacy;
+  connection.query('update Users set Privacy = ? where userName = ?', [privacy, username], function(error, result, fields){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.sendStatus(200);
+    }
+  });
+});
+//Post method to add a new entry to the Collect Rating Star table
+app.post('/addcollectratingtable', (req, res)=>{
+  var username = req.body.collectrating.username;
+  var eventID = req.body.collectrating.eventid;
+  var timestamp = req.body.collectrating.timestamp;
+  connection.query('insert into CollectRatings(userID, eventID, timeStamp) values((select userID from Users where userName = ?),?,?)'[username, eventID, timestamp], function(error, result, fields){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.sendStatus(200);
+    }
+  });
+});
 //get method to get all the contacts with messages for a given user given through the url
 app.get('/messagecontacts/:userName', (req, res) => {
     var userName = req.params.userName;
@@ -344,6 +388,23 @@ app.get('/messagecontacts/:userName', (req, res) => {
             res.send(JSON.stringify(result));
         }
     });
+});
+//Get method to check for the event currently happening now
+app.get('/currentevent/:username/:datetime/:latitude/:longitude', (req, res) =>{
+  var username = req.params.username;
+  var datetime = req.params.datetime;
+  var latitude = req.params.latitude;
+  var longitude = req.params.longitude;
+  connection.query('select EventID as ID, Title as EventTitle from Users join (select * from Events natural join Invites) as a on (a.RecipientUserID = Users.userID)  where a.EventLatitude - ? <= 0.00001 and a.EventLatitude - ? >= -0.00001 and a.EventLongitude - ? <= 0.00001 and a.EventLongitude - ? >= -0.00001 and Users.userName = ? and Status = \'Attending\' and a.StartDate = ? limit 1', [latitude, latitude, longitude, longitude,username, datetime], function(error, result, fields){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.send(JSON.stringify(result));
+    }
+  });
 });
 //Put method to check the current event with a given username and event start time given to the server
 app.put('/currentevent', (req, res) => {
