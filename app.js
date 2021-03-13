@@ -425,6 +425,22 @@ app.put('/currentevent', (req, res) => {
           }
     });
 });
+//Post method to invite a user to an event
+app.post('/invite', (req, res)=>{
+  var senderUserName = req.body.invite.senderUserName;
+  var reciepientUserName = req.body.invite.reciepientUserName;
+  var eventID = req.body.invite.eventID;
+  connection.query('insert into Invites(SenderUserID, RecipientUserID, EventID) values((select userID from Users where userName = ?), (select userID from Users where userName = ?), ?)', [senderUserName, reciepientUserName, eventID],function(error, result, field){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.sendStatus(200);
+    }
+  });
+});
 //Gets all messages between the senderName and the recieverName
 app.get('/messages/:senderName/:recieverName', (req, res) => {
     var senderName = req.params.senderName;
