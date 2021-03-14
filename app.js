@@ -406,6 +406,20 @@ app.get('/currentevent/:username/:datetime/:latitude/:longitude', (req, res) =>{
     }
   });
 });
+//get method to get all notifications
+app.get('/notification/:username', (req, res)=>{
+  var username = req.params.username;
+  connection.query('select distinct senders.Sender, senders.EventID as EventId, Events.Title as EventTitle from Events join (select sender.userName as Sender, sender.EventID, sender.Status, Users.userName from Users join (select * from Users join Invites on (Invites.SenderUserID = Users.userID)) as sender on (Users.userID = sender.RecipientUserID)) as senders on (Events.EventID = senders.EventID) where senders.Status = \'Recieved\' and senders.userName = ?', [username], function(error, result, field){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.send(JSON.stringify(result));
+    }
+  });
+});
 //Put method to check the current event with a given username and event start time given to the server
 app.put('/currentevent', (req, res) => {
     var userName = req.body.currentevent.username;
