@@ -7,6 +7,7 @@ var mysql= require('mysql');
 var bodyParser = require('body-parser');
 const { Console } = require('console');
 const { response } = require('express');
+const { send } = require('process');
 var salt = bcrypt.genSaltSync(10);
 fs.mkdir("Images", () => {
 });
@@ -419,6 +420,36 @@ app.get('/notification/:username', (req, res)=>{
       res.send(JSON.stringify(result));
     }
   });
+});
+app.put('/accepted', (req, res)=>{
+  var recipient = req.body.notif.Recipient;
+  var sender = req.body.notif.Sender;
+  var eventID = req.body.notif.EventId;
+  connection.query('update Invites set Status = \'Accept\' where EventID = ? and RecipientUserID = (select userID from Users where userName = ?) and SenderUserID = (select userID from Users where userName = ?)', [eventID, recipient, sender], function(error, result, field){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.sendStatus(200);
+    }
+  })
+});
+app.put('/declined', (req, res)=>{
+  var recipient = req.body.notif.Recipient;
+  var sender = req.body.notif.Sender;
+  var eventID = req.body.notif.EventId;
+  connection.query('update Invites set Status = \'Deny\' where EventID = ? and RecipientUserID = (select userID from Users where userName = ?) and SenderUserID = (select userID from Users where userName = ?)', [eventID, recipient, sender], function(error, result, field){
+    if(error)
+    {
+      res.sendStatus(500);
+    }
+    else
+    {
+      res.sendStatus(200);
+    }
+  })
 });
 //Put method to check the current event with a given username and event start time given to the server
 app.put('/currentevent', (req, res) => {
