@@ -99,15 +99,6 @@ app.get('/messages/:senderName/:recieverName', getAllMessagesBetweenTwoUsers);
 app.get('/getAttendees/:eventID', getAllAttendeesForAnEvent);
 //Post method to join an Event
 app.post('/joinEvent', joinAnEvent);
-// Add Access Control Allow Origin headers
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "ec2-100-26-223-139.compute-1.amazonaws.com:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 //Set the port to listen for the server to listen on
 const port = process.env.port || 3000;
 app.listen(port, () => {
