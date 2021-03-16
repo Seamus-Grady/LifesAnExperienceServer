@@ -129,6 +129,19 @@ module.exports = {
             res.send(JSON.stringify(result));
           }
         });
-      }
+      },
+    getAllAttendeesForAnEvent : (req, res) =>{
+      var eventID = req.params.eventID;
+      connection.query('select distinct Users.userName as UserName, Users.ProfilePicture from Invites join Users where Invites.EventID = ?', [eventID], function(error, result, field){
+        if(error)
+        {
+          res.sendStatus(500);
+        }
+        else
+        {
+          res.send(JSON.stringify(result));
+        }
+      });
+    }
     
 };
