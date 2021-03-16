@@ -142,6 +142,20 @@ module.exports = {
           res.send(JSON.stringify(result));
         }
       });
+      },
+    joinAnEvent : (req, res) =>{
+      var eventID = req.body.eve.id;
+      var userName = req.body.eve.username;
+      connection.query('insert into Invites(SenderUserID, RecipientUserID, EventID, Status) values((select userID from Users where userName = ?), (select userID from Users where userName = ?), ?, \'Accept\')', [userName, userName, eventID], function(error, result, field){
+        if(error)
+        {
+          res.sendStatus(500);
+        }
+        else
+        {
+          res.sendStatus(200);
+        }
+      });
     }
     
 };

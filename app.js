@@ -8,7 +8,7 @@ const { response } = require('express');
 var fs = require("fs");
 const { send } = require('process');
 const { registerAProfile, updateProfilePicture, loginAProfile, getProfileInformation, setPrivacyOfProfile } = require('./routes/Profile');
-const { getAnEvent, getCurrentHappenings, createEvent, addKeywordForAnEvent, deleteAnEvent, updateEvent, addARating, checkEventHappeningNow, getAllAttendeesForAnEvent} = require('./routes/Event');
+const { getAnEvent, getCurrentHappenings, createEvent, addKeywordForAnEvent, deleteAnEvent, updateEvent, addARating, checkEventHappeningNow, getAllAttendeesForAnEvent, joinAnEvent} = require('./routes/Event');
 const { addAMessage, AddMessageContact, getAllContacts, deleteAContact, deleteAllMessagesForAContact, getAllMessageForAContact, getAllMessagesBetweenTwoUsers } = require('./routes/Message');
 const { addARatingForTable } = require('./routes/Rating');
 const { getNotifications, acceptNotification, declineNotification, inviteToEvent } = require('./routes/Notification');
@@ -96,6 +96,8 @@ app.post('/invite', inviteToEvent);
 app.get('/messages/:senderName/:recieverName', getAllMessagesBetweenTwoUsers);
 //Get all people attending an event
 app.get('/getAttendees', getAllAttendeesForAnEvent);
+//Post method to join an Event
+app.post('/joinEvent', joinAnEvent);
 //Set the port to listen for the server to listen on
 const port = process.env.port || 3000;
 app.listen(port, () => {
