@@ -8,6 +8,7 @@ module.exports = {
         var profilePicture = req.body.user.profilepicture;
         console.log(profilePicture);
         console.log(userName);
+        var pictureCount = fs.readdirSync(__dirname + '/Images').length
         var filePath = 'img_' + pictureCount + '.jpg';
         saveArrayAsFile(profilePicture, '/Images/' + filePath);
         filePath = 'http://100.26.223.139:3000/img/' + filePath;

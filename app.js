@@ -12,7 +12,6 @@ const { getAnEvent, getCurrentHappenings, createEvent, addKeywordForAnEvent, del
 const { addAMessage, AddMessageContact, getAllContacts, deleteAContact, deleteAllMessagesForAContact, getAllMessageForAContact, getAllMessagesBetweenTwoUsers } = require('./routes/Message');
 const { addARatingForTable } = require('./routes/Rating');
 const { getNotifications, acceptNotification, declineNotification, inviteToEvent } = require('./routes/Notification');
-var pictureCount = 6;
 fs.mkdir("Images", () => {
 });
 
