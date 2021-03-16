@@ -94,7 +94,7 @@ app.post('/invite', inviteToEvent);
 //Gets all messages between the senderName and the recieverName
 app.get('/messages/:senderName/:recieverName', getAllMessagesBetweenTwoUsers);
 //Get all people attending an event
-app.get('/getAttendees', getAllAttendeesForAnEvent);
+app.get('/getAttendees/:eventID', getAllAttendeesForAnEvent);
 //Post method to join an Event
 app.post('/joinEvent', joinAnEvent);
 //Set the port to listen for the server to listen on
