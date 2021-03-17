@@ -8,7 +8,7 @@ module.exports = {
         var profilePicture = req.body.user.profilepicture;
         console.log(profilePicture);
         console.log(userName);
-        var pictureCount = fs.readdirSync(__dirname + '/Images').length
+        var pictureCount = fs.readdirSync('/home/ubuntu/LifesAnExperienceServer/Images').length
         var filePath = 'img_' + pictureCount + '.jpg';
         saveArrayAsFile(profilePicture, '/Images/' + filePath);
         filePath = 'http://100.26.223.139:3000/img/' + filePath;
@@ -100,7 +100,7 @@ module.exports = {
 };
 const saveArrayAsFile =  (arrayBuffer, filePath)=> {
     console.log(filePath);
-    fs.writeFile(__dirname + filePath, Buffer.from(arrayBuffer, 'base64'), 'binary',  (err)=> {
+    fs.writeFile('/home/ubuntu/LifesAnExperienceServer/'+ filePath, Buffer.from(arrayBuffer, 'base64'), 'binary',  (err)=> {
         if (err) {
             console.log("There was an error writing the image")
         }

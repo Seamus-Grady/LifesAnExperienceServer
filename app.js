@@ -8,7 +8,7 @@ const { response } = require('express');
 var fs = require("fs");
 const { send } = require('process');
 const { registerAProfile, updateProfilePicture, loginAProfile, getProfileInformation, setPrivacyOfProfile } = require('./routes/Profile');
-const { getAnEvent, getCurrentHappenings, createEvent, addKeywordForAnEvent, deleteAnEvent, updateEvent, addARating, checkEventHappeningNow, getAllAttendeesForAnEvent, joinAnEvent, updateEventVibe} = require('./routes/Event');
+const { getAnEvent, getCurrentHappenings, createEvent, addKeywordForAnEvent, deleteAnEvent, updateEvent, addARating, checkEventHappeningNow, getAllAttendeesForAnEvent, joinAnEvent} = require('./routes/Event');
 const { addAMessage, AddMessageContact, getAllContacts, deleteAContact, deleteAllMessagesForAContact, getAllMessageForAContact, getAllMessagesBetweenTwoUsers } = require('./routes/Message');
 const { addARatingForTable } = require('./routes/Rating');
 const { getNotifications, acceptNotification, declineNotification, inviteToEvent } = require('./routes/Notification');
@@ -71,8 +71,6 @@ app.get("/contacts/:userName", getAllContacts);
 app.put('/messagescontacts/delete', deleteAContact);
 //Put method to updateAnEvent
 app.put('/updateevent', updateEvent);
-//Put method to update Vibe for an Event
-app.put('/updateEventVibe', updateEventVibe);
 //Put method to delete all messages between a user and another user
 app.put('/deletemessagecontacts', deleteAllMessagesForAContact);
 //Put method to delete all messages between a user and another user

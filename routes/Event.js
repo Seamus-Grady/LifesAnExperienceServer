@@ -156,20 +156,6 @@ module.exports = {
           res.sendStatus(200);
         }
       });
-    },
-    updateEventVibe : (req, res) =>{
-      var eventID = req.body.eve.eventID;
-      var vibe = req.body.eve.vibe;
-      connection.query('update Events set Vibe = ? where EventID = ?', [vibe, eventID], function(error, result, fields){
-        if(error)
-        {
-          res.sendStatus(500);
-        }
-        else
-        {
-          res.sendStatus(200);
-        }
-      });
     }
     
 };
