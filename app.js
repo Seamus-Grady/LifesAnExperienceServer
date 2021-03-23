@@ -21,23 +21,34 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use('/img', express.static(__dirname + '/Images/'));
+var db_config = {
+  host: process.env.HOST,
+  user: process.env.USERS,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+};
 app.use(function(req, res, next){
- 	global.connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USERS,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    queryTimeout: 60000 
-  });
-	connection.connect(function (err) {
-    console.log('conecting');
-    if (err) {
-        console.error('Error connecting: ' + err.stack);
+  global.connection = mysql.createConnection(db_config);
+  connection.connect(function(err) {              
+    if(err) {                                     
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000);
     }
-
-    console.log('Connected as id ' + connection.threadId);
+    else
+    {
+      console.log('conecting');
+      console.log('Connected as id ' + connection.threadId);
+    }
   });
-	next();
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      handleDisconnect();                         
+    } else {                                      
+      throw err;                                  
+    }
+  });
+  next();
 });
 //Put method to update the profile picture of a given user
 app.put('/updateProfilePicture', updateProfilePicture);
