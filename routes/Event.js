@@ -13,7 +13,8 @@ module.exports = {
         });
       },
     getCurrentHappenings : (req, res) => {
-        connection.query('select a.EventID as ID, a.Title as EventTitle, a.Image as EventImage, a.Location as EventLocation, a.EventLatitude, a.EventLongitude, a.Vibe as EventVibe, a.StartDate as EventStartDate, a.EndDate as EventEndDate, a.Category as EventCategory, a.EventKeywords, Users.userName as UserName from (select Events.EventID, Title, Image, Location, EventLatitude, EventLongitude, Vibe, StartDate, EndDate, Category, HostUserID, group_concat(keyword) as EventKeywords from Keywords join Events on (Keywords.EventID = Events.EventID) group by EventID) as a join Users on (userID = a.HostUserID) limit 4', function(error, result, fields){
+      var userName = req.params.userName;
+        connection.query('select d.ID, d.EventTitle, d.EventImage, d.EventLocation, d.EventLatitude, d.EventLongitude, d.EventVibe, d.EventStartDate, d.EventEndDate, d.EventCategory, d.EventKeywords, d.UserName, b.userID as UserRating from (select a.EventID as ID, a.Title as EventTitle, a.Image as EventImage, a.Location as EventLocation, a.EventLatitude, a.EventLongitude, a.Vibe as EventVibe, a.StartDate as EventStartDate, a.EndDate as EventEndDate, a.Category as EventCategory, a.EventKeywords, Users.userName as UserName from (select Events.EventID, Title, Image, Location, EventLatitude, EventLongitude, Vibe, StartDate, EndDate, Category, HostUserID, group_concat(keyword) as EventKeywords from Keywords join Events on (Keywords.EventID = Events.EventID) group by EventID) as a join Users on (userID = a.HostUserID)) as d left join (select * from CollectRatings  where CollectRatings.userID = (select userID from Users where userName = ?) limit 1) as b on (d.ID = b.eventID) limit 4', [userName], function(error, result, fields){
           if(error)
           {
             res.sendStatus(500);
@@ -103,10 +104,19 @@ module.exports = {
     addARating : (req, res) => {
         var eventID = req.body.rating.eventid;
         var newRating = req.body.rating.newrate;
-        connection.query('update Events set Vibe = ? where EventID = ?', [newRating, eventID], function(error, result, field){
+        var userName = req.body.rating.userName;
+        var timestamp = req.body.rating.timestamp;
+        connection.query('update Events set Vibe = ? where EventID = ?; insert into CollectRatings(userID, eventID, timeStamp) values(select userID from Users where userName = ?), ?, ?)', [newRating, eventID, userName, eventID, timestamp], function(error, result, field){
             if(error)
             {
+              if(error.errno == 1062)
+              {
+                  res.sendStatus(204);
+              }
+              else
+              {
                 res.sendStatus(500);
+              }  
             }
             else
             {

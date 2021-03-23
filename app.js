@@ -58,7 +58,7 @@ app.post('/register', registerAProfile);
 //Get method to get an Event from an EventID given from the user
 app.get('/events/:eventID', getAnEvent);
 //Get method to get the currenthappening
-app.get('/currenthappening', getCurrentHappenings);
+app.get('/currenthappening/:userName', getCurrentHappenings);
 //Post request to add a message to the database for a given sender and reciever
 app.post('/addmessage', addAMessage);
 //Post method for when a user creates an Event
