@@ -105,22 +105,36 @@ module.exports = {
         var eventID = req.body.rating.eventid;
         var newRating = req.body.rating.newrate;
         var userName = req.body.rating.userName;
-        var timestamp = req.body.rating.timestamp;
-        connection.query('update Events set Vibe = ? where EventID = ?; insert into CollectRatings(userID, eventID, timeStamp) values(select userID from Users where userName = ?), ?, ?)', [newRating, eventID, userName, eventID, timestamp], function(error, result, field){
+        var timestamp = Date(req.body.rating.timestamp);
+        connection.query('update Events set Vibe = ? where EventID = ?', [newRating, eventID], function(error, result, field){
             if(error)
             {
-              if(error.errno == 1062)
+              
               {
-                  res.sendStatus(204);
-              }
-              else
-              {
+                console.log(error);
                 res.sendStatus(500);
               }  
             }
             else
             {
-                res.sendStatus(200);
+              connection.query('insert into CollectRatings(userID, eventID, timeStamp) values((select userID from Users where userName = ?), ?, ?)', [userName, eventID, timestamp], function(error, result, field){
+                if(error)
+                {
+                  if(error.errno == 1062)
+                  {
+                    res.sendStatus(204);
+                  }
+                  else
+                  {
+                    res.sendStatus(500);
+                  }
+                }
+                else
+                {
+                  res.sendStatus(200);
+                }
+              }
+              ); 
             }
         });
         },
