@@ -105,7 +105,7 @@ module.exports = {
         var eventID = req.body.rating.eventid;
         var newRating = req.body.rating.newrate;
         var userName = req.body.rating.userName;
-        var timestamp = Date(req.body.rating.timestamp);
+        var timestamp = req.body.rating.timestamp;
         connection.query('update Events set Vibe = ? where EventID = ?', [newRating, eventID], function(error, result, field){
             if(error)
             {
