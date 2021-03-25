@@ -27,7 +27,7 @@ var db_config = {
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 };
-function handleDisconnect (req, res, next){
+function handleDisconnect (){
   global.connection = mysql.createConnection(db_config);
   connection.connect(function(err) {              
     if(err) {                                     
@@ -48,9 +48,8 @@ function handleDisconnect (req, res, next){
       throw err;                                  
     }
   });
-  next();
 }
-app.use(handleDisconnect);
+handleDisconnect();
 //Put method to update the profile picture of a given user
 app.put('/updateProfilePicture', updateProfilePicture);
 //Post request for when a user registers with our site, will store their information as well as a hash through bcrypt
