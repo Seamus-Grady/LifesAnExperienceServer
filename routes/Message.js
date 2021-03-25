@@ -16,8 +16,8 @@ module.exports = {
         });
       },
     AddMessageContact : (req, res) =>{
-        var userName = req.body.messageContact.userName;
-        var recieverUser = req.body.messageContact.recieverUserName;
+        var userName = req.body.user.username;
+        var recieverUser = req.body.user.contact;
         connection.query('insert into Contacts(ProfileUserID, FriendUserID) values((select userID from Users where userName = ?), (select userID from Users where userName = ?))', [userName, recieverUser], function(error, result, field){
           if(error)
           {
@@ -43,8 +43,8 @@ module.exports = {
         });
       },
     deleteAContact : (req, res)=>{
-        var username = req.body.contactDelete.username;
-        var recipientname = req.body.contactDelete.recipientname;
+        var username = req.body.user.username;
+        var recipientname = req.body.user.contact;
         connection.query('delete from Contacts where ProfileUserID = (select userID from Users where userName = ?) and FriendUserID = (select userID from Users where userName = ?)', [username, recipientname], function(error, result, field){
           if(error)
           {
@@ -57,8 +57,8 @@ module.exports = {
         })
       },
     deleteAllMessagesForAContact : (req, res)=>{
-        var userName = req.body.contactDelete.userName;
-        var contactName = req.body.contactDelete.contactName;
+        var userName = req.body.user.username;
+        var contactName = req.body.user.contact;
         connection.query('delete from Messages where SenderUserID = (select userID from Users where userID = ?) and RecieverUserID = (select userID from Users where userID = ?)', [userName, contactName], function(error, result, fields){
           if(error)
           {
