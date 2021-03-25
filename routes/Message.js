@@ -75,7 +75,7 @@ module.exports = {
         console.log(userName);
         var contactName = req.body.user.contact;
         console.log(contactName);
-        connection.query('delete from Messages where SenderUserID = (select userID from Users where userID = ?) and RecieverUserID = (select userID from Users where userID = ?)', [userName, contactName], function(error, result, fields){
+        connection.query('delete from Messages where SenderUserID = (select userID from Users where userName = ?) and RecieverUserID = (select userID from Users where userName = ?)', [userName, contactName], function(error, result, fields){
           if(error)
           {
             res.sendStatus(500);
