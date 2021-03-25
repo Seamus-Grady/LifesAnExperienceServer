@@ -52,16 +52,7 @@ module.exports = {
           }
           else
           {
-            connection.query('delete from Messages where SenderUserID = (select userID from Users where userID = ?) and RecieverUserID = (select userID from Users where userID = ?)', [username, recipientname], function(error, result, fields){
-              if(error)
-              {
-                res.sendStatus(500);
-              }
-              else
-              {
-                res.sendStatus(200);
-              }
-            });
+            res.sendStatus(200);
           }
         })
       },
