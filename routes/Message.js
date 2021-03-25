@@ -15,10 +15,24 @@ module.exports = {
           }
         });
       },
-    AddMessageContact : (req, res) =>{
+    AddContact : (req, res) =>{
         var userName = req.body.addcontact.username;
         var recieverUser = req.body.addcontact.contact;
         connection.query('insert into Contacts(ProfileUserID, FriendUserID) values((select userID from Users where userName = ?), (select userID from Users where userName = ?))', [userName, recieverUser], function(error, result, field){
+          if(error)
+          {
+            res.sendStatus(500);
+          }
+          else
+          {
+            res.sendStatus(200);
+          }
+        })
+      },
+      AddMessageContact : (req, res) =>{
+        var userName = req.body.addcontact.username;
+        var recieverUser = req.body.addcontact.contact;
+        connection.query('insert into Messages(SenderUserID, RecieverUserID) values((select userID from Users where userName = ?), (select userID from Users where userName = ?))', [userName, recieverUser], function(error, result, field){
           if(error)
           {
             res.sendStatus(500);
@@ -92,7 +106,7 @@ module.exports = {
         +' on (Users.userID = Messages.SenderUserID)'
         +' where Users.userName = ? or Users.userName = ?) as senderUserName join Users' 
         + ' on (senderUserName.RecieverUserID = Users.userID)'
-        +' where Users.userName = ? or Users.userName = ? order by senderUserName.MessagesID', [senderName, recieverName, recieverName, senderName], function(error, result, fields){
+        +' where Users.userName = ? or Users.userName = ? and senderUserName.Message is not null order by senderUserName.MessagesID', [senderName, recieverName, recieverName, senderName], function(error, result, fields){
             if(error){
                 res.sendStatus(500);
               }
