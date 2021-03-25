@@ -72,7 +72,9 @@ module.exports = {
       },
     deleteAllMessagesForAContact : (req, res)=>{
         var userName = req.body.user.username;
+        console.log(userName);
         var contactName = req.body.user.contact;
+        console.log(contactName);
         connection.query('delete from Messages where SenderUserID = (select userID from Users where userID = ?) and RecieverUserID = (select userID from Users where userID = ?)', [userName, contactName], function(error, result, fields){
           if(error)
           {
