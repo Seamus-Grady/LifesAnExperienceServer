@@ -84,8 +84,6 @@ app.put('/messagescontacts/delete', deleteAContact);
 app.put('/updateevent', updateEvent);
 //Put method to delete all messages between a user and another user
 app.put('/deletemessagecontacts', deleteAllMessagesForAContact);
-//Put method to delete all messages between a user and another user
-app.put("/messagecontacts/delete", deleteAllMessagesForAContact);
 //Put method to update the privacy of a profile
 app.put('/setPrivacy', setPrivacyOfProfile);
 //Post method to add a new entry to the Collect Rating Star table
