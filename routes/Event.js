@@ -12,6 +12,19 @@ module.exports = {
           }
         });
       },
+      getAllEventsForAUser : (req, res)=>{
+        var userName = req.params.userName;
+        connection.query('select * from Events where HostUserID = (select userID from Users where userName = ?)', [userName], function(error, result, field){
+          if(error)
+          {
+            res.sendStatus(500);
+          }
+          else
+          {
+            res.send(JSON.stringify(result));
+          }
+        })
+      },
     getCurrentHappenings : (req, res) => {
       var userName = req.params.userName;
         connection.query('select d.ID, d.EventTitle, d.EventImage, d.EventLocation, d.EventLatitude, d.EventLongitude, d.EventVibe, d.EventStartDate, d.EventEndDate, d.EventCategory, d.EventKeywords, d.UserName, b.userID as UserRating from (select a.EventID as ID, a.Title as EventTitle, a.Image as EventImage, a.Location as EventLocation, a.EventLatitude, a.EventLongitude, a.Vibe as EventVibe, a.StartDate as EventStartDate, a.EndDate as EventEndDate, a.Category as EventCategory, a.EventKeywords, Users.userName as UserName from (select Events.EventID, Title, Image, Location, EventLatitude, EventLongitude, Vibe, StartDate, EndDate, Category, HostUserID, group_concat(keyword) as EventKeywords from Keywords join Events on (Keywords.EventID = Events.EventID) group by EventID) as a join Users on (userID = a.HostUserID)) as d left join (select * from CollectRatings  where CollectRatings.userID = (select userID from Users where userName = ?)) as b on (d.ID = b.eventID) limit 4', [userName], function(error, result, fields){
