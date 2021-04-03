@@ -14,7 +14,7 @@ module.exports = {
       },
       getAllEventsForAUser : (req, res)=>{
         var userName = req.params.userName;
-        connection.query('select * from Events where HostUserID = (select userID from Users where userName = ?)', [userName], function(error, result, field){
+        connection.query('select b.ID, b.EventTitle, b.EventImage, b.EventLocation, b.EventLatitude, b.EventLongitude, b.EventVibe, b.EventStartDate, b.EventEndDate, b.EventCategory, b.UserName, CollectRatings.userID from (select EventID as ID, Title as EventTitle, Image as EventImage, Location as EventLocation, EventLatitude, EventLongitude, Vibe as EventVibe, StartDate as EventStartDate, EndDate as EventEndDate, Category as EventCategory, Users.userName as UserName from Events join Users on (Users.userID = Events.HostUserID))as b left join CollectRatings on (CollectRatings.eventID = b.ID) where b.userName = ?', [userName], function(error, result, field){
           if(error)
           {
             res.sendStatus(500);
