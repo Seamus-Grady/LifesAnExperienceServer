@@ -23,6 +23,19 @@ module.exports = {
             pictureCount++;
           }
         })},
+    getSearchFollowers: (req, res) => {
+      var input = req.params.input;
+      connection.query('select userID as id, userName as UserName, ProfilePicture from Users where LOCATE(?, userName) > 0 limit 8', [input], function(error, result, field){
+        if(error)
+          {
+            res.sendStatus(500);
+          }
+          else
+          {
+            res.send(JSON.stringify(result));
+          }
+      })
+    },
     registerAProfile: (req, res) => {
         var hash = bcrypt.hashSync(req.body.user.password, salt);
         var userEmail = req.body.user.email;
