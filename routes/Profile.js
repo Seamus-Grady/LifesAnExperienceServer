@@ -25,7 +25,8 @@ module.exports = {
         })},
     getSearchFollowers: (req, res) => {
       var input = req.params.input;
-      connection.query('select userID as id, userName as UserName, ProfilePicture from Users where LOCATE(?, userName) > 0 limit 8', [input], function(error, result, field){
+      var userName = req.params.username;
+      connection.query('select Users.userID as id, Users.userName as UserName, Users.ProfilePicture, b.userName as IsFollowing from Users left join (select * from Users join Contacts on ProfileUserID = userID where userName = ?) as b on Users.userID = b.FriendUserID where LOCATE(?, Users.userName) > 0 limit 8', [input], function(error, result, field){
         if(error)
           {
             res.sendStatus(500);

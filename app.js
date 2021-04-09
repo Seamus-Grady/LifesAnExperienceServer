@@ -109,7 +109,7 @@ app.post('/joinEvent', joinAnEvent);
 //Get method to get all events that a user has created
 app.get('/userEvents/:userName', getAllEventsForAUser);
 //Get method to get all followers a user is searching for
-app.get('/followers/:input', getSearchFollowers);
+app.get('/followers/:username/:input', getSearchFollowers);
 //Set the port to listen for the server to listen on
 const port = process.env.port || 3000;
 app.listen(port, () => {
