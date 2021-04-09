@@ -9,7 +9,7 @@ var fs = require("fs");
 const { send } = require('process');
 const { registerAProfile, updateProfilePicture, loginAProfile, getProfileInformation, setPrivacyOfProfile, getSearchFollowers } = require('./routes/Profile');
 const { getAnEvent, getCurrentHappenings, createEvent, addKeywordForAnEvent, deleteAnEvent, updateEvent, addARating, checkEventHappeningNow, getAllAttendeesForAnEvent, getAllEventsForAUser, joinAnEvent} = require('./routes/Event');
-const { addAMessage, AddMessageContact, getAllContacts, deleteAContact, deleteAllMessagesForAContact, getAllMessageForAContact, getAllMessagesBetweenTwoUsers } = require('./routes/Message');
+const { addAMessage, AddMessageContact, getAllContacts, deleteAContact, deleteAllMessagesForAContact, getAllMessageForAContact, getAllMessagesBetweenTwoUsers, AddContact } = require('./routes/Message');
 const { addARatingForTable } = require('./routes/Rating');
 const { getNotifications, acceptNotification, declineNotification, inviteToEvent } = require('./routes/Notification');
 fs.mkdir("Images", () => {
@@ -79,7 +79,7 @@ app.get('/profile/:username', getProfileInformation);
 //Added a get method to get all contacts that a given user has"
 app.get("/contacts/:userName", getAllContacts);
 //Put request to delete a contact between a user and a reciepient
-app.put('/messagescontacts/delete', deleteAContact);
+app.put('/unfollowUser', deleteAContact);
 //Put method to updateAnEvent
 app.put('/updateevent', updateEvent);
 //Put method to delete all messages between a user and another user
@@ -110,6 +110,8 @@ app.post('/joinEvent', joinAnEvent);
 app.get('/userEvents/:userName', getAllEventsForAUser);
 //Get method to get all followers a user is searching for
 app.get('/followers/:username/:input', getSearchFollowers);
+//Post method to follow a new User
+app.post('/followUser', AddContact);
 //Set the port to listen for the server to listen on
 const port = process.env.port || 3000;
 app.listen(port, () => {
