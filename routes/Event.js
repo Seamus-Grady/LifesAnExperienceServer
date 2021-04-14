@@ -51,7 +51,6 @@ module.exports = {
         var category = req.body.newevent.EventCategory;
         var vibe = req.body.newevent.EventVibe;
         var filePath = '';
-        console.log(image);
         if(image != null)
         {
           var pictureCount = fs.readdirSync('/home/ubuntu/LifesAnExperienceServer/Images').length + 1;
