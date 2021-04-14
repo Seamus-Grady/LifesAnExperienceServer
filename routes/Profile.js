@@ -6,8 +6,6 @@ module.exports = {
     updateProfilePicture: (req, res)=>{
         var userName = req.body.user.username;
         var profilePicture = req.body.user.profilepicture;
-        console.log(profilePicture);
-        console.log(userName);
         var pictureCount = fs.readdirSync('/home/ubuntu/LifesAnExperienceServer/Images').length + 1;
         var filePath = 'img_' + pictureCount + '.jpg';
         saveArrayAsFile(profilePicture, '/Images/' + filePath);

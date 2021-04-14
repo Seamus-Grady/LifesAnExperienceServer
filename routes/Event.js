@@ -49,14 +49,22 @@ module.exports = {
         var location = req.body.newevent.EventLocation;
         var category = req.body.newevent.EventCategory;
         var vibe = req.body.newevent.EventVibe;
-        connection.query('Insert into Events(Title, Image, Location, Vibe, EventLatitude, EventLongitude, StartDate, EndDate, Category, HostUserID) values(?,?,?,?,?,?,date(?),date(?),?, (select userID from Users where userName = ?))', [title, image, location, vibe, latitude, longitude, startDate, endDate, category, userName], function(error, result, fields){
+        var filePath = '';
+        if(image != null)
+        {
+          var pictureCount = fs.readdirSync('/home/ubuntu/LifesAnExperienceServer/Images').length + 1;
+          filePath = 'img_' + pictureCount + '.jpg';
+          saveArrayAsFile(image, '/Images/' + filePath);
+          filePath = 'http://100.26.223.139:3000/img/' + filePath;
+        }
+        connection.query('Insert into Events(Title, Image, Location, Vibe, EventLatitude, EventLongitude, StartDate, EndDate, Category, HostUserID) values(?,?,?,?,?,?,date(?),date(?),?, (select userID from Users where userName = ?))', [title, filePath, location, vibe, latitude, longitude, startDate, endDate, category, userName], function(error, result, fields){
           if(error)
           {
             res.sendStatus(500);
           }
           else
           {
-            res.send(JSON.stringify(result.insertId));
+            res.send(JSON.stringify({Id = result.insertId, EventImage = filePath}));
           }
         });
       },
@@ -193,6 +201,16 @@ module.exports = {
           res.sendStatus(200);
         }
       });
-    }
-    
+    }  
+};
+const saveArrayAsFile =  (arrayBuffer, filePath)=> {
+  console.log(filePath);
+  fs.writeFile('/home/ubuntu/LifesAnExperienceServer/'+ filePath, Buffer.from(arrayBuffer, 'base64'), 'binary',  (err)=> {
+      if (err) {
+          console.log("There was an error writing the image")
+      }
+      else {
+          console.log("Written File :" + filePath)
+      }
+  });
 };
