@@ -64,7 +64,7 @@ module.exports = {
           }
           else
           {
-            res.send(JSON.stringify({Id = result.insertId, EventImage = filePath}));
+            res.send(JSON.stringify({Id: result.insertId, EventImage: filePath}));
           }
         });
       },
