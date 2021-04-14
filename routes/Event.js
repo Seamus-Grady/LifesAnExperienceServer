@@ -1,3 +1,4 @@
+var fs = require("fs");
 module.exports = {
     getAnEvent : (req, res) =>{
         var eventID = req.params.eventID;
